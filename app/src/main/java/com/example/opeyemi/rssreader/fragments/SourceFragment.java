@@ -22,6 +22,8 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 /**
  * Created by opeyemi on 15/08/2016.
@@ -76,6 +78,15 @@ public class SourceFragment extends Fragment {
         adapter = new SourceAdapter(getContext(), sources);
         sourceReel.setAdapter(adapter);
 
+
+        RealmQuery query =  realm.where(Source.class);
+        RealmResults<Source> results = query.findAll();
+
+        for(Source source: results){
+
+            adapter.add(source);
+
+        }
 
         realm.beginTransaction();
         Source theVerge = realm.createObject(Source.class);

@@ -36,28 +36,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ViewPager fragmentViewPager = (ViewPager)findViewById(R.id.fragment_reel);
+         ViewPager fragmentViewPager = (ViewPager)findViewById(R.id.fragment_reel);
         FeedSourceAdapter adapter = new FeedSourceAdapter(getSupportFragmentManager());
 
-        fragmentViewPager.setAdapter(adapter);
+         fragmentViewPager.setAdapter(adapter);
 
-        FloatingActionButton fab =(FloatingActionButton)findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddFeedDialog();
-            }
-        });
-
-
-
-
-
-    }
-
-    public void showAddFeedDialog(){
-        FragmentManager fm = getSupportFragmentManager();
-        AddFeedDialog dialog = AddFeedDialog.newInstance("ADD FEED");
-        dialog.show(fm,"ADD_FEED");
     }
 }

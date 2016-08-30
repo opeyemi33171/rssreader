@@ -1,5 +1,6 @@
 package com.example.opeyemi.rssreader.fragments;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Intent;
@@ -43,8 +44,8 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         getDialog().setTitle(getArguments().getString("TITLE"));
 
-        EditText sourceName = (EditText)view.findViewById(R.id.sourceName);
-        EditText sourceUrl = (EditText)view.findViewById(R.id.sourceUrl);
+        final EditText sourceName = (EditText)view.findViewById(R.id.sourceName);
+        final EditText sourceUrl = (EditText)view.findViewById(R.id.sourceUrl);
 
         Button createButton = (Button)view.findViewById(R.id.CreateButton);
         Button cancelButton = (Button)view.findViewById(R.id.cancelButton);
@@ -53,7 +54,10 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra()
+                intent.putExtra("SOURCE_NAME", sourceName.getText().toString());
+                intent.putExtra("SOURCE_URL", sourceUrl.getText().toString());
+                    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+                dismiss();
 
             }
         });

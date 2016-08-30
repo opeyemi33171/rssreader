@@ -1,10 +1,12 @@
 package com.example.opeyemi.rssreader.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +28,14 @@ import io.realm.RealmConfiguration;
  */
 public class SourceFragment extends Fragment {
 
+    public static final int SOURCE_FRAGMENT = 1;
     private String title;
     private int page;
+
+    private final ArrayList<Source> sources = new ArrayList<>();
+    private  SourceAdapter adapter;
+
+    private Realm realm;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +47,7 @@ public class SourceFragment extends Fragment {
     }
 
 
-    public static SourceFragment newInstance(int page, String title){
+    public static SourceFragment newInstance(int page, String title) {
 
         SourceFragment sources = new SourceFragment();
 
@@ -56,21 +64,17 @@ public class SourceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View view = (View)inflater.inflate(R.layout.source_fragment, container, false);
+        View view = (View) inflater.inflate(R.layout.source_fragment, container, false);
 
         RealmConfiguration config = new RealmConfiguration.Builder(getContext()).build();
         Realm.setDefaultConfiguration(config);
 
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
 
-        final ArrayList<Source> sources = new ArrayList<>();
-        final SourceAdapter adapter = new SourceAdapter(getContext(), sources);
 
-        ListView sourceReel = (ListView)view.findViewById(R.id.sourceReel);
-
+        ListView sourceReel = (ListView) view.findViewById(R.id.sourceReel);
+        adapter = new SourceAdapter(getContext(), sources);
         sourceReel.setAdapter(adapter);
-
-
 
 
         realm.beginTransaction();
@@ -106,6 +110,40 @@ public class SourceFragment extends Fragment {
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddFeedDialog();
+            }
+        });
         return view;
+    }
+
+    public void showAddFeedDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        AddFeedDialog dialog = AddFeedDialog.newInstance("ADD FEED");
+        dialog.setTargetFragment(this,SOURCE_FRAGMENT);
+        dialog.show(fm, "ADD_FEED");
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == Activity.RESULT_OK){
+
+
+
+            realm.beginTransaction();
+            Source newSource = realm.createObject(Source.class);
+            newSource.setName(data.getStringExtra("SOURCE_NAME").toString());
+            newSource.setUrl( data.getStringExtra("SOURCE_URL").toString());
+            newSource.setFavorite(false);
+            realm.commitTransaction();
+
+            adapter.add(newSource);
+
+        }
     }
 }

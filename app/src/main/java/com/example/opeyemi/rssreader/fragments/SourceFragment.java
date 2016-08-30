@@ -77,7 +77,7 @@ public class SourceFragment extends Fragment {
         Source theVerge = realm.createObject(Source.class);
         theVerge.setName("THE VERGE");
         theVerge.setUrl("http://www.theverge.com/rss/index.xml");
-        theVerge.setFavorite(true);
+        theVerge.setFavorite(false);
 
 
         Source bbc = realm.createObject(Source.class);

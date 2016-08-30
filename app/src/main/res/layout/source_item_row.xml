@@ -31,4 +31,19 @@
         android:textColor="#bababa"
         android:id="@+id/sourceDescription"
         android:paddingBottom="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:id="@+id/sourceParent"
+        android:textSize="10dp"
+        android:textColor="#FF0000"/>
+
+    <com.github.curioustechizen.ago.RelativeTimeTextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:relative_time_prefix="posted "
+       />
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.example.opeyemi.rssreader.datamodels;
 
+import java.util.Date;
+
 /**
  * Created by opeyemi on 11/08/2016.
  */
@@ -9,6 +11,8 @@ public class SourceItem {
     private String description;
     private String icon;
     private String link;
+    private String parentSource;
+    private Date date;
 
     public SourceItem(){
 
@@ -54,5 +58,21 @@ public class SourceItem {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getParentSource() {
+        return parentSource;
+    }
+
+    public void setParentSource(String parentSource) {
+        this.parentSource = parentSource;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

@@ -103,6 +103,7 @@ public class Articles_Activity extends AppCompatActivity {
 
         requestThread.start();
 
+
         articleReel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

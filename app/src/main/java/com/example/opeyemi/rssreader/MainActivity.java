@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.example.opeyemi.rssreader.adapters.FeedSourceAdapter;
 import com.example.opeyemi.rssreader.adapters.SourceAdapter;
 import com.example.opeyemi.rssreader.datamodels.Source;
+import com.example.opeyemi.rssreader.fragments.AddFeedDialog;
 import com.example.opeyemi.rssreader.fragments.SourceFragment;
 
 import java.util.ArrayList;
@@ -40,8 +41,23 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentViewPager.setAdapter(adapter);
 
+        FloatingActionButton fab =(FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddFeedDialog();
+            }
+        });
 
 
 
+
+
+    }
+
+    public void showAddFeedDialog(){
+        FragmentManager fm = getSupportFragmentManager();
+        AddFeedDialog dialog = AddFeedDialog.newInstance("ADD FEED");
+        dialog.show(fm,"ADD_FEED");
     }
 }

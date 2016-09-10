@@ -184,12 +184,14 @@ public class SourceFragment extends Fragment {
 
             toBeDeleted = adapter.getItem(info.position);
 
+            adapter.remove(toBeDeleted);
+            adapter.notifyDataSetChanged();
+
             realm.beginTransaction();
             toBeDeleted.deleteFromRealm();
             realm.commitTransaction();
 
-            adapter.remove(toBeDeleted);
-            adapter.notifyDataSetChanged();
+
         }
 
         return true;

@@ -7,7 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,6 +39,9 @@ public class SourceFragment extends Fragment {
 
     private final ArrayList<Source> sources = new ArrayList<>();
     private  SourceAdapter adapter;
+
+    private Source toBeDeleted;
+    private AdapterView.AdapterContextMenuInfo info;
 
     private Realm realm;
 
@@ -75,6 +81,8 @@ public class SourceFragment extends Fragment {
 
 
         ListView sourceReel = (ListView) view.findViewById(R.id.sourceReel);
+        registerForContextMenu(sourceReel);
+
         adapter = new SourceAdapter(getContext(), sources);
         sourceReel.setAdapter(adapter);
 
@@ -156,5 +164,34 @@ public class SourceFragment extends Fragment {
             adapter.add(newSource);
 
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+
+        MenuInflater inflater =  getActivity().getMenuInflater();
+        inflater.inflate(R.menu.delete_context_menu, menu);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.deleteContextItem){
+
+            toBeDeleted = adapter.getItem(info.position);
+
+            realm.beginTransaction();
+            toBeDeleted.deleteFromRealm();
+            realm.commitTransaction();
+
+            adapter.remove(toBeDeleted);
+            adapter.notifyDataSetChanged();
+        }
+
+        return true;
     }
 }

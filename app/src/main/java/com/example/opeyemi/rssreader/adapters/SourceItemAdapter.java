@@ -40,7 +40,12 @@ public class SourceItemAdapter extends ArrayAdapter<SourceItem> {
         ImageView sourceIcon = (ImageView)convertView.findViewById(R.id.articleIcon);
 
         sourceName.setText(source.getName());
-        sourceDescription.setText(Html.fromHtml(source.getDescription()));
+            try {
+                sourceDescription.setText(Html.fromHtml(source.getDescription()));
+            }
+            catch (Exception e ){
+                sourceDescription.setText(source.getDescription());
+            }
         Picasso.with(getContext())
                 .load(source.getIcon())
                 .resize(600,300).centerInside()

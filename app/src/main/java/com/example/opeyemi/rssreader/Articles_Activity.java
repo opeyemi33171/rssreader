@@ -43,12 +43,16 @@ public class Articles_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_articles_);
 
+
         final Intent intent = getIntent();
 
         RealmQuery query = realm.where(Source.class);
         RealmResults<Source> results = query.equalTo("url",getIntent().getStringExtra("URL")).findAll();
 
         selectedSource = results.first();
+
+
+        getSupportActionBar().setTitle(selectedSource.getName().toString());
 
         final ArrayList<SourceItem> items = new ArrayList<>();
         final SourceItemAdapter adapter = new SourceItemAdapter(this, items);

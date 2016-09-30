@@ -1,5 +1,8 @@
 package com.example.opeyemi.rssreader.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.einmalfel.earl.EarlParser;
@@ -76,6 +80,7 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
         view = (View)inflater.inflate(R.layout.feed_fragment,container, false);
 
         pullToRefreshLayout = (RecyclerRefreshLayout)view.findViewById(R.id.refresh_layout);
@@ -87,7 +92,6 @@ public class FeedFragment extends Fragment {
             }
         });
         pullToRefresh();
-
 
         return view;
     }
@@ -160,5 +164,23 @@ public void pullToRefresh() {
     };
     requestThread.start();
 }
+
+    private boolean haveNetworkConnection(){
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+
+        for (NetworkInfo ni : netInfo){
+            if(ni.getTypeName().equalsIgnoreCase("WIFI")){
+                if(ni.isConnected()) haveConnectedWifi = true;
+            }
+            if(ni.getTypeName().equalsIgnoreCase("MOBILE")){
+                if(ni.isConnected())haveConnectedMobile = true;
+            }
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
 
 }

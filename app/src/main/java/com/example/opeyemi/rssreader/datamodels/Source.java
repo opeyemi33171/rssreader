@@ -11,6 +11,7 @@ public class Source extends RealmObject {
     private String name;
     private String url;
     private Boolean favorite;
+    private String colorHexadeciaml;
 
     public Source(String name, String url){
 
@@ -44,5 +45,13 @@ public class Source extends RealmObject {
 
     public void setFavorite(Boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public String getColorHexadeciaml() {
+        return colorHexadeciaml;
+    }
+
+    public void setColorHexadeciaml(String colorHexadeciaml) {
+        this.colorHexadeciaml = colorHexadeciaml;
     }
 }

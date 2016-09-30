@@ -1,7 +1,11 @@
 package com.example.opeyemi.rssreader.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,12 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.opeyemi.rssreader.Articles_Activity;
 import com.example.opeyemi.rssreader.R;
 import com.example.opeyemi.rssreader.adapters.SourceAdapter;
 import com.example.opeyemi.rssreader.datamodels.Source;
 
+import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -37,7 +43,7 @@ public class SourceFragment extends Fragment {
     private String title;
     private int page;
 
-    private final ArrayList<Source> sources = new ArrayList<>();
+    protected final ArrayList<Source> sources = new ArrayList<>();
     private  SourceAdapter adapter;
 
     private Source toBeDeleted;
@@ -100,18 +106,21 @@ public class SourceFragment extends Fragment {
         Source theVerge = realm.createObject(Source.class);
         theVerge.setName("THE VERGE");
         theVerge.setUrl("http://www.theverge.com/rss/index.xml");
+        theVerge.setColorHexadeciaml("#ffa500");
         theVerge.setFavorite(false);
 
 
         Source bbc = realm.createObject(Source.class);
         bbc.setName("BBC");
         bbc.setUrl("http://feeds.bbci.co.uk/news/rss.xml?edition=uk");
+        bbc.setColorHexadeciaml("#ff0000");
         bbc.setFavorite(false);
 
         Source githubFeed = realm.createObject(Source.class);
         githubFeed.setName("GITHUB");
         githubFeed.setUrl("https://github.com/opeyemi33171.private.atom?token=AI63bi9oTTWVMvBOl32vW6YjqyiKCeX2ks61vX4awA==");
-        githubFeed.setFavorite(false);
+        githubFeed.setColorHexadeciaml("#add8e6");
+        githubFeed.setFavorite(true);
 
         realm.commitTransaction();
 
@@ -123,9 +132,14 @@ public class SourceFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Intent nav = new Intent(getActivity(), Articles_Activity.class);
-                nav.putExtra("URL", sources.get(i).getUrl());
-                startActivity(nav);
+                if(haveNetworkConnection()) {
+                    Intent nav = new Intent(getActivity(), Articles_Activity.class);
+                    nav.putExtra("URL", sources.get(i).getUrl());
+                    startActivity(nav);
+                }
+                else {
+                    Toast.makeText(getContext(),"No Internet",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -151,8 +165,6 @@ public class SourceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(resultCode == Activity.RESULT_OK){
-
-
 
             realm.beginTransaction();
             Source newSource = realm.createObject(Source.class);
@@ -190,10 +202,26 @@ public class SourceFragment extends Fragment {
             realm.beginTransaction();
             toBeDeleted.deleteFromRealm();
             realm.commitTransaction();
-
-
         }
 
         return true;
+    }
+
+    private boolean haveNetworkConnection(){
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+
+        for (NetworkInfo ni : netInfo){
+            if(ni.getTypeName().equalsIgnoreCase("WIFI")){
+                if(ni.isConnected()) haveConnectedWifi = true;
+            }
+            if(ni.getTypeName().equalsIgnoreCase("MOBILE")){
+                if(ni.isConnected())haveConnectedMobile = true;
+            }
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 }

@@ -1,16 +1,23 @@
 package com.example.opeyemi.rssreader;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
@@ -50,6 +57,12 @@ public class Articles_Activity extends AppCompatActivity {
         RealmResults<Source> results = query.equalTo("url",getIntent().getStringExtra("URL")).findAll();
 
         selectedSource = results.first();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(selectedSource.getColorHexadeciaml())));
+
+        Float shadeFactor = 1.5f;
+        int colorToTint = darker(Color.parseColor(selectedSource.getColorHexadeciaml()), shadeFactor);
+
+        updateStatusBarColor(colorToTint);
 
 
         getSupportActionBar().setTitle(selectedSource.getName().toString());
@@ -86,6 +99,7 @@ public class Articles_Activity extends AppCompatActivity {
                             @Override
                             public void run() {
                                adapter.notifyDataSetChanged();
+
                             }
                         });
 
@@ -106,7 +120,6 @@ public class Articles_Activity extends AppCompatActivity {
         };
 
         requestThread.start();
-
 
         articleReel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -166,6 +179,27 @@ public class Articles_Activity extends AppCompatActivity {
 
         return true;
 
+    }
+
+    public static int darker (int color, float factor) {
+        int a = Color.alpha( color );
+        int r = Color.red( color );
+        int g = Color.green( color );
+        int b = Color.blue( color );
+
+        return Color.argb( a,
+                Math.max( (int)(r * factor), 0 ),
+                Math.max( (int)(g * factor), 0 ),
+                Math.max( (int)(b * factor), 0 ) );
+    }
+
+
+    public void updateStatusBarColor(int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(color);
+        }
     }
 
 

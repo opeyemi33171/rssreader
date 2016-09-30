@@ -20,6 +20,7 @@ import com.example.opeyemi.rssreader.R;
  */
 public class AddFeedDialog extends android.support.v4.app.DialogFragment {
 
+
     public AddFeedDialog(){
 
     }
@@ -42,6 +43,9 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
         getDialog().setTitle(getArguments().getString("TITLE"));
 
         final EditText sourceName = (EditText)view.findViewById(R.id.sourceName);
@@ -54,6 +58,9 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
+
+
+
                 intent.putExtra("SOURCE_NAME", sourceName.getText().toString());
                 intent.putExtra("SOURCE_URL", sourceUrl.getText().toString());
                     getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
@@ -61,7 +68,7 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
 
             }
         });
-
+                                                                     
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,4 +80,5 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
         sourceName.requestFocus();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
+
 }

@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("Sources");
         setSupportActionBar(toolbar);
 
+
          ViewPager fragmentViewPager = (ViewPager)findViewById(R.id.fragment_reel);
          FeedSourceAdapter adapter = new FeedSourceAdapter(getSupportFragmentManager());
 

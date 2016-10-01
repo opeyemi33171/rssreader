@@ -51,7 +51,7 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         colorPicker = (LineColorPicker) view.findViewById(R.id.picker);
-        colorPicker.setColors(new int[] {Color.RED,Color.GREEN,Color.BLUE, Color.YELLOW});
+        colorPicker.setColors(new int[] {Color.RED,Color.GREEN,Color.BLUE, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.BLACK});
 
         colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
             @Override

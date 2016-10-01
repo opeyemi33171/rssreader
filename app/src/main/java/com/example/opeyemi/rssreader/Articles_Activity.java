@@ -59,13 +59,13 @@ public class Articles_Activity extends AppCompatActivity {
         selectedSource = results.first();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#"+selectedSource.getColorHexadeciaml())));
 
-        /*
-        Float shadeFactor = 1.5f;
-        int colorToTint = darker(Color.parseColor(selectedSource.getColorHexadeciaml()), shadeFactor);
+
+        Float shadeFactor = 1.0f;
+        int colorToTint = darker(Color.parseColor("#" + selectedSource.getColorHexadeciaml()), shadeFactor);
 
         updateStatusBarColor(colorToTint);
         getSupportActionBar().setTitle(selectedSource.getName().toString());
-*/
+
         final ArrayList<SourceItem> items = new ArrayList<>();
         final SourceItemAdapter adapter = new SourceItemAdapter(this, items);
 

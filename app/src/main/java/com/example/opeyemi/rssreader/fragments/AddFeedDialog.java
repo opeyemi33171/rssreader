@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,11 +16,16 @@ import android.widget.EditText;
 
 import com.example.opeyemi.rssreader.R;
 
+import uz.shift.colorpicker.LineColorPicker;
+import uz.shift.colorpicker.OnColorChangedListener;
+
 /**
  * Created by opeyemi on 28/08/2016.
  */
 public class AddFeedDialog extends android.support.v4.app.DialogFragment {
 
+    private String selectedColor;
+    private LineColorPicker colorPicker;
 
     public AddFeedDialog(){
 
@@ -44,6 +50,17 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        colorPicker = (LineColorPicker) view.findViewById(R.id.picker);
+        colorPicker.setColors(new int[] {Color.RED,Color.GREEN,Color.BLUE, Color.YELLOW});
+
+        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int i) {
+                selectedColor = Integer.toHexString(i);
+                String x = selectedColor;
+            }
+        });
+
 
 
         getDialog().setTitle(getArguments().getString("TITLE"));
@@ -63,7 +80,8 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
 
                 intent.putExtra("SOURCE_NAME", sourceName.getText().toString());
                 intent.putExtra("SOURCE_URL", sourceUrl.getText().toString());
-                    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+                intent.putExtra("SOURCE_COLOR", selectedColor);
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
                 dismiss();
 
             }

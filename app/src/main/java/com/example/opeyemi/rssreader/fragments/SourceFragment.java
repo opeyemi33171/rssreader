@@ -170,6 +170,7 @@ public class SourceFragment extends Fragment {
             Source newSource = realm.createObject(Source.class);
             newSource.setName(data.getStringExtra("SOURCE_NAME").toString());
             newSource.setUrl( data.getStringExtra("SOURCE_URL").toString());
+            newSource.setColorHexadeciaml(data.getStringExtra("SOURCE_COLOR"));
             newSource.setFavorite(false);
             realm.commitTransaction();
 

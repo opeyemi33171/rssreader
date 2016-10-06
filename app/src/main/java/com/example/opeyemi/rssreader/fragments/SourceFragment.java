@@ -86,6 +86,8 @@ public class SourceFragment extends Fragment {
         realm = Realm.getDefaultInstance();
 
 
+
+
         ListView sourceReel = (ListView) view.findViewById(R.id.sourceReel);
         registerForContextMenu(sourceReel);
 
@@ -102,31 +104,6 @@ public class SourceFragment extends Fragment {
 
         }
 
-        realm.beginTransaction();
-        Source theVerge = realm.createObject(Source.class);
-        theVerge.setName("THE VERGE");
-        theVerge.setUrl("http://www.theverge.com/rss/index.xml");
-        theVerge.setColorHexadeciaml("#ffa500");
-        theVerge.setFavorite(false);
-
-
-        Source bbc = realm.createObject(Source.class);
-        bbc.setName("BBC");
-        bbc.setUrl("http://feeds.bbci.co.uk/news/rss.xml?edition=uk");
-        bbc.setColorHexadeciaml("#ff0000");
-        bbc.setFavorite(false);
-
-        Source githubFeed = realm.createObject(Source.class);
-        githubFeed.setName("GITHUB");
-        githubFeed.setUrl("https://github.com/opeyemi33171.private.atom?token=AI63bi9oTTWVMvBOl32vW6YjqyiKCeX2ks61vX4awA==");
-        githubFeed.setColorHexadeciaml("#add8e6");
-        githubFeed.setFavorite(true);
-
-        realm.commitTransaction();
-
-        sources.add(theVerge);
-        sources.add(bbc);
-        sources.add(githubFeed);
 
         sourceReel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

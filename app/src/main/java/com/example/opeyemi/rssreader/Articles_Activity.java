@@ -44,6 +44,7 @@ public class Articles_Activity extends AppCompatActivity {
     private Realm realm = Realm.getDefaultInstance();
 
     private Source selectedSource;
+    private int colorToTint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +58,19 @@ public class Articles_Activity extends AppCompatActivity {
         RealmResults<Source> results = query.equalTo("url",getIntent().getStringExtra("URL")).findAll();
 
         selectedSource = results.first();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#"+selectedSource.getColorHexadeciaml())));
-
-
+        if(selectedSource.getColorHexadeciaml().contains("#") == true){
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(selectedSource.getColorHexadeciaml())));
+        }
+        else {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + selectedSource.getColorHexadeciaml())));
+        }
         Float shadeFactor = 1.0f;
-        int colorToTint = darker(Color.parseColor("#" + selectedSource.getColorHexadeciaml()), shadeFactor);
-
+        if(selectedSource.getColorHexadeciaml().contains("#") == true) {
+            colorToTint = darker(Color.parseColor(selectedSource.getColorHexadeciaml()), shadeFactor);
+        }
+        else{
+            colorToTint = darker(Color.parseColor("#" + selectedSource.getColorHexadeciaml()), shadeFactor);
+        }
         updateStatusBarColor(colorToTint);
         getSupportActionBar().setTitle(selectedSource.getName().toString());
 
@@ -90,6 +98,7 @@ public class Articles_Activity extends AppCompatActivity {
                         sourceItem.setDescription(item.getDescription());
                         sourceItem.setIcon(item.getImageLink());
                         sourceItem.setLink(item.getLink());
+                        sourceItem.setDate(item.getPublicationDate());
 
 
                         items.add(sourceItem);

@@ -3,12 +3,15 @@ package com.example.opeyemi.rssreader.fragments;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,6 +19,7 @@ import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
+import com.example.opeyemi.rssreader.Articles_Activity;
 import com.example.opeyemi.rssreader.R;
 import com.example.opeyemi.rssreader.adapters.FeedItemAdapter;
 import com.example.opeyemi.rssreader.adapters.FeedSourceAdapter;
@@ -36,6 +40,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by opeyemi on 15/08/2016.
@@ -101,6 +106,7 @@ public void pullToRefresh() {
     RealmQuery<Source> query = realm.where(Source.class);
     RealmResults<Source> favoriteSources = query.equalTo("favorite", true).findAll();
 
+
     final ArrayList<SourceItem> sourceItems = new ArrayList<>();
     final FeedItemAdapter adapter = new FeedItemAdapter(getContext(), sourceItems);
 
@@ -149,7 +155,7 @@ public void pullToRefresh() {
                 public void run() {
                     Collections.sort(sourceItems, new Comparator<SourceItem>() {
                         public int compare(SourceItem first, SourceItem second) {
-                            return first.getDate().compareTo(second.getDate());
+                            return second.getDate().compareTo(first.getDate());
                         }
                     });
                     adapter.notifyDataSetChanged();
@@ -163,6 +169,15 @@ public void pullToRefresh() {
 
     };
     requestThread.start();
+
+    feedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(getActivity(), Uri.parse(sourceItems.get(i).getLink()));
+        }
+    });
 }
 
     private boolean haveNetworkConnection(){

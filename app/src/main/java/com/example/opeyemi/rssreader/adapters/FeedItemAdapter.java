@@ -48,7 +48,9 @@ public class FeedItemAdapter extends ArrayAdapter<SourceItem> {
         v.setReferenceTime(item.getDate().getTime());
 
         sourceName.setText(item.getName());
-        sourceDescription.setText(Html.fromHtml(item.getDescription()));
+        if(item.getDescription() !=null) {
+            sourceDescription.setText(Html.fromHtml(item.getDescription()));
+        }
         sourceParent.setText(item.getParentSource());
         Picasso.with(getContext())
                 .load(item.getIcon())

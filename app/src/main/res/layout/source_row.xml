@@ -11,10 +11,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="40dp"
+        android:minHeight="60dp"
         android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="20sp"
-        android:id="@+id/sourceName"/>
+        android:id="@+id/sourceName"
+        android:fontFamily="sans-serif"
+        />
 </LinearLayout>

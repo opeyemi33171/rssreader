@@ -9,6 +9,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,6 +58,7 @@ public class Articles_Activity extends AppCompatActivity {
         RealmQuery query = realm.where(Source.class);
         RealmResults<Source> results = query.equalTo("url",getIntent().getStringExtra("URL")).findAll();
 
+
         selectedSource = results.first();
         if(selectedSource.getColorHexadeciaml().contains("#") == true){
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(selectedSource.getColorHexadeciaml())));
@@ -72,7 +74,7 @@ public class Articles_Activity extends AppCompatActivity {
             colorToTint = darker(Color.parseColor("#" + selectedSource.getColorHexadeciaml()), shadeFactor);
         }
         updateStatusBarColor(colorToTint);
-        getSupportActionBar().setTitle(selectedSource.getName().toString());
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#ffffff'>"+selectedSource.getName().toString()+"</font>"));
 
         final ArrayList<SourceItem> items = new ArrayList<>();
         final SourceItemAdapter adapter = new SourceItemAdapter(this, items);

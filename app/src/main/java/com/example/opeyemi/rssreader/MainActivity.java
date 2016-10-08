@@ -3,6 +3,7 @@ package com.example.opeyemi.rssreader;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -38,10 +39,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+
          ViewPager fragmentViewPager = (ViewPager)findViewById(R.id.fragment_reel);
          FeedSourceAdapter adapter = new FeedSourceAdapter(getSupportFragmentManager());
 
          fragmentViewPager.setAdapter(adapter);
+         tabLayout.setupWithViewPager(fragmentViewPager);
 
     }
 }

@@ -39,4 +39,14 @@ public class FeedSourceAdapter extends android.support.v4.app.FragmentPagerAdapt
                 return null;
         }
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+       if(position == 0){
+           return "SOURCES";
+       }
+       else{
+           return "FEEDS";
+       }
+    }
 }

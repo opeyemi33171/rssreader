@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,7 +33,7 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
     private String selectedColor;
     private LineColorPicker colorPicker;
     private Realm realm;
-    private boolean duplicateName = false;
+    private boolean failValidation = false;
 
     public AddFeedDialog(){
 
@@ -88,17 +89,17 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
             public void onClick(View view) {
 
                 for(Source source: sources ){
-                    if(source.getName().equalsIgnoreCase(sourceName.getText().toString())){
-                        duplicateName = true;
-                    }
-                    else{
-                        duplicateName = false;
+                    if(source.getName().equalsIgnoreCase(sourceName.getText().toString()) || validateUrl(sourceUrl.getText().toString()) == false){
+                        failValidation = true;
                         break;
                     }
+                    else{
+                        failValidation = false;
+                    }
                 }
-                if(duplicateName){
+                if(failValidation){
                     sourceName.setText("");
-                    Toast.makeText(getActivity(),"Source name has been taken", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Invalid Data", Toast.LENGTH_LONG).show();
                     dismiss();
                 }
                 else{
@@ -123,6 +124,10 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
 
         sourceName.requestFocus();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+    public Boolean validateUrl(String url){
+       return URLUtil.isValidUrl(url);
     }
 
 }

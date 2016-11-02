@@ -87,12 +87,12 @@ public class AddFeedDialog extends android.support.v4.app.DialogFragment {
             @Override
             public void onClick(View view) {
 
-                for(Source x: sources ){
-                    if(x.getName() != sourceName.getText().toString()){
-                        duplicateName = false;
+                for(Source source: sources ){
+                    if(source.getName().equalsIgnoreCase(sourceName.getText().toString())){
+                        duplicateName = true;
                     }
                     else{
-                        duplicateName = true;
+                        duplicateName = false;
                         break;
                     }
                 }
